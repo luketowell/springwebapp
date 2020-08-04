@@ -1,6 +1,7 @@
 package com.luketowell.webexample.model;
 
 import javax.persistence.*;
+import java.util.HashSet;
 import java.util.Set;
 
 @Entity
@@ -16,12 +17,12 @@ public class Book {
     @ManyToMany
     @JoinTable(name = "author_book", joinColumns = @JoinColumn(name = "book_id"),
             inverseJoinColumns = @JoinColumn(name = "authorId"))
-    private Set<Author> authors;
+    private Set<Author> authors = new HashSet<>();
 
     public Book() {
     }
 
-    public Book(String title, String ispn, Set<Author> authors) {
+    public Book(String title, String ispn) {
         this.title = title;
         this.ispn = ispn;
         this.authors = authors;
