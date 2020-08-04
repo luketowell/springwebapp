@@ -1,9 +1,8 @@
 package com.luketowell.webexample.model;
 
-import javax.persistence.Entity;
-import javax.persistence.GeneratedValue;
-import javax.persistence.GenerationType;
-import javax.persistence.Id;
+import javax.persistence.*;
+import java.util.HashSet;
+import java.util.Set;
 
 @Entity
 public class Publisher {
@@ -17,15 +16,11 @@ public class Publisher {
     private String state;
     private String zip;
 
-    public Publisher() {
-    }
+    @OneToMany
+    @JoinColumn(name = "publisher_id")
+    private Set<Book> books = new HashSet<>();
 
-    public Publisher( String name, String addressLine1, String city, String state, String zip) {
-        this.name = name;
-        this.addressLine1 = addressLine1;
-        this.city = city;
-        this.state = state;
-        this.zip = zip;
+    public Publisher() {
     }
 
     public Long getId() {
@@ -76,6 +71,14 @@ public class Publisher {
         this.zip = zip;
     }
 
+    public Set<Book> getBooks() {
+        return books;
+    }
+
+    public void setBooks(Set<Book> books) {
+        this.books = books;
+    }
+
     @Override
     public String toString() {
         return "Publisher{" +
@@ -101,7 +104,8 @@ public class Publisher {
             return false;
         if (city != null ? !city.equals(publisher.city) : publisher.city != null) return false;
         if (state != null ? !state.equals(publisher.state) : publisher.state != null) return false;
-        return zip != null ? zip.equals(publisher.zip) : publisher.zip == null;
+        if (zip != null ? !zip.equals(publisher.zip) : publisher.zip != null) return false;
+        return books != null ? books.equals(publisher.books) : publisher.books == null;
     }
 
     @Override
@@ -112,6 +116,7 @@ public class Publisher {
         result = 31 * result + (city != null ? city.hashCode() : 0);
         result = 31 * result + (state != null ? state.hashCode() : 0);
         result = 31 * result + (zip != null ? zip.hashCode() : 0);
+        result = 31 * result + (books != null ? books.hashCode() : 0);
         return result;
     }
 }
